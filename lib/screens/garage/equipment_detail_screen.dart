@@ -11,3 +11,7 @@ class EquipmentDetailScreen extends StatelessWidget {
     );
   }
 }
+
+//  Header banner (photo, category badge)• Usage gauge• Task list for this asset• History mini-timeline
+// • Edit ✎• Archive 🗄
+// Optional: Detailed history - • Date separators• Icons for “usage”, “task done”, “note” • Export ↧• Delete older than… 🗑
