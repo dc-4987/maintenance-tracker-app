@@ -1,1 +1,1 @@
-const String appTitle = 'Maintenance Tracker';
+const String appTitle = 'ServiceMate';
