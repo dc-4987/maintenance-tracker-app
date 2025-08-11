@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:maintenance_tracker_app/screens/dashboard/dashboard_screen.dart';
 import 'package:maintenance_tracker_app/screens/fab/equipment_onboarding_form_screen.dart';
 import 'package:maintenance_tracker_app/screens/garage/garage_screen.dart';
@@ -22,8 +25,20 @@ class MyApp extends StatelessWidget {
       title: appTitle,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+        useMaterial3: true,
         platform: TargetPlatform.iOS,
         fontFamily: "WorkSans",
+        scaffoldBackgroundColor: Colors.lime.shade400,
+        appBarTheme: AppBarTheme(
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          surfaceTintColor: Colors.transparent,
+          backgroundColor: Theme.of(
+            context,
+          ).colorScheme.surface.withValues(alpha: 0.2),
+          foregroundColor: Theme.of(context).colorScheme.onSurface,
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
+        ),
         textTheme: TextTheme(
           displayLarge: TextStyle(fontSize: 34),
           displayMedium: TextStyle(fontSize: 28),
@@ -43,15 +58,20 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.w600,
             color: Theme.of(context).colorScheme.onPrimaryContainer,
           ),
+          labelLarge: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
           labelMedium: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.w500,
-            color: Theme.of(context).colorScheme.onPrimaryContainer,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
           labelSmall: TextStyle(
             fontSize: 13,
             fontWeight: FontWeight.w500,
-            color: Theme.of(context).colorScheme.onPrimaryContainer,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         dividerTheme: DividerThemeData(
@@ -60,7 +80,14 @@ class MyApp extends StatelessWidget {
           space: 15,
         ),
         iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.onPrimaryContainer,
+          color: Theme.of(context).colorScheme.onSurface,
+        ),
+        iconButtonTheme: IconButtonThemeData(
+          style: ButtonStyle(
+            iconColor: WidgetStatePropertyAll(
+              Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
         ),
         bottomSheetTheme: BottomSheetThemeData(
           backgroundColor: Theme.of(context).colorScheme.surface,
@@ -69,6 +96,24 @@ class MyApp extends StatelessWidget {
             borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
           ),
           elevation: 4,
+        ),
+        cardTheme: CardThemeData(
+          color: Colors.lime.shade400,
+          shadowColor: Colors.grey,
+          surfaceTintColor: Theme.of(context).colorScheme.surface,
+          elevation: 1.0,
+        ),
+        navigationBarTheme: NavigationBarThemeData(
+          elevation: 0,
+          backgroundColor: Theme.of(
+            context,
+          ).colorScheme.surface.withValues(alpha: 0.2),
+          surfaceTintColor: Colors.transparent,
+          indicatorColor: Colors.lime.shade400,
+          iconTheme: WidgetStatePropertyAll(IconThemeData()),
+          labelTextStyle: WidgetStatePropertyAll(
+            TextStyle(color: Colors.black),
+          ),
         ),
         // TODO: set themes for other widgets
       ),
@@ -157,20 +202,20 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      extendBodyBehindAppBar: true,
+      extendBody: true,
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Theme.of(context).colorScheme.onPrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
+        flexibleSpace: ClipRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+            child: SizedBox.expand(),
+          ),
+        ),
         leading: IconButton(
           onPressed: null,
           icon: Icon(Icons.account_circle_sharp),
           iconSize: 35,
-          color: Theme.of(context).colorScheme.onPrimary,
+          // color: Theme.of(context).colorScheme.onPrimary,
         ),
         title: Text(widget.title),
         actions: [
@@ -180,30 +225,49 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: null,
               icon: Icon(Icons.settings),
               iconSize: 35,
-              color: Theme.of(context).colorScheme.onPrimary,
+              // color: Theme.of(context).colorScheme.onPrimary,
             ),
           ),
         ],
       ),
       body: _getBody(),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _selectedIndex,
-        onDestinationSelected: _onDestinationSelected,
-        height: 56,
-        destinations: [
-          NavigationDestination(
-            icon: Icon(Icons.warehouse_sharp),
-            label: "Garage",
+      bottomNavigationBar: ClipRect(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(
+                context,
+              ).colorScheme.surface.withValues(alpha: 0.2),
+              border: Border(
+                top: BorderSide(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.surface.withValues(alpha: 0.2),
+                ),
+              ),
+            ),
+            child: NavigationBar(
+              selectedIndex: _selectedIndex,
+              onDestinationSelected: _onDestinationSelected,
+              height: 56,
+              destinations: [
+                NavigationDestination(
+                  icon: Icon(Icons.warehouse_sharp),
+                  label: "Garage",
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.dashboard_sharp),
+                  label: "Dashboard",
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.assignment_sharp),
+                  label: "Tasks",
+                ),
+              ],
+            ),
           ),
-          NavigationDestination(
-            icon: Icon(Icons.dashboard_sharp),
-            label: "Dashboard",
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.assignment_sharp),
-            label: "Tasks",
-          ),
-        ],
+        ),
       ),
       floatingActionButton: SpeedDial(
         icon: Icons.home_repair_service_sharp,

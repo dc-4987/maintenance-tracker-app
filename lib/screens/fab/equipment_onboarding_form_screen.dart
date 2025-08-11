@@ -50,17 +50,27 @@ class _EquipmentOnboardingFormScreenState
             ),
           ),
           Text(
-            'Add equipment',
+            'Add a vehicle or equipment',
             style: Theme.of(context).textTheme.titleLarge,
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 24),
 
+          // Type
+          TextField(
+            controller: _nameCtrl,
+            decoration: const InputDecoration(
+              labelText: 'Type',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const SizedBox(height: 12),
+          // TODO the type will determine the remaining questions.
           // Name
           TextField(
             controller: _nameCtrl,
             decoration: const InputDecoration(
-              labelText: 'Name',
+              labelText: 'Make',
               border: OutlineInputBorder(),
             ),
           ),
@@ -91,6 +101,14 @@ class _EquipmentOnboardingFormScreenState
             label: const Text('Generate maintenance plan'),
             onPressed: _submit,
           ),
+
+          // Disclaimer
+          Text(
+            'AI-generated instructions should be verified against official manuals.',
+            style: Theme.of(context).textTheme.labelSmall,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 24),
         ],
       ),
     );
